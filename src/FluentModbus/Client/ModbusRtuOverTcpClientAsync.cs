@@ -68,7 +68,7 @@ public partial class ModbusRtuOverTcpClient
             {
                 try
                 {
-                    frameLength += await _networkStream.ReadAsync(frameBuffer.Buffer, frameLength, frameBuffer.Buffer.Length - frameLength, cancellationToken).ConfigureAwait(false);
+                    frameLength += await _networkStream.ReadAsync(frameBuffer.Buffer, frameLength, frameBuffer.Buffer.Length - frameLength, timeoutCts.Token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
@@ -117,5 +117,5 @@ public partial class ModbusRtuOverTcpClient
             throw new ModbusException(ErrorMessage.ModbusClient_InvalidResponseFunctionCode);
 
         return _frameBuffer.Buffer.AsMemory(1, frameLength - 3);
-    }    
+    }
 }

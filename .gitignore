@@ -12,3 +12,5 @@ doc/api/*
 *.suo
 *.user
 *.pyc
+
+.idea

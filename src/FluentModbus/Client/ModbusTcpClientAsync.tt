@@ -20,7 +20,7 @@ namespace FluentModbus
             var body = match.Groups[3].Value;
             body = Regex.Replace(body, "AsSpan", "AsMemory");
             body = Regex.Replace(body, @"_networkStream.Write\((.*?)\)", m => $"await _networkStream.WriteAsync({m.Groups[1]}, cancellationToken).ConfigureAwait(false)");
-            body = Regex.Replace(body, @"_networkStream.Read\((.*?)\)", m => $"await _networkStream.ReadAsync({m.Groups[1]}, cancellationToken).ConfigureAwait(false)");
+            body = Regex.Replace(body, @"_networkStream.Read\((.*?)\)", m => $"await _networkStream.ReadAsync({m.Groups[1]}, timeoutCts.Token).ConfigureAwait(false)");
             body = Regex.Replace(body, @"// ASYNC-ONLY: ", "");
 
             Write($"///<inheritdoc/>\n        protected override async Task<Memory<byte>> TransceiveFrameAsync({signature}, CancellationToken cancellationToken = default){body}");
